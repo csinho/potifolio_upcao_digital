@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emerson Silva | Dev No-Code & Especialista Bubble</title>
+  <meta name="description" content="Desenvolvedor no-code/low-code especialista em Bubble.io e criação de plugins. Ajudo empreendedores a tirarem ideias do papel com velocidade e qualidade." />
+  <meta property="og:title" content="Emerson Silva | Dev No-Code & Especialista Bubble" />
+  <meta property="og:description" content="Desenvolvedor no-code/low-code especialista em Bubble.io e criação de plugins." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: hsl(225, 14%, 2%);
+      --fg: hsl(210, 20%, 98%);
+      --card: hsl(220, 13%, 6%);
+      --primary: hsl(45, 96%, 49%);
+      --primary-fg: hsl(225, 14%, 2%);
+      --secondary: hsl(220, 13%, 10%);
+      --muted: hsl(217, 10%, 64%);
+      --accent: hsl(199, 89%, 60%);
+      --border: hsl(220, 10%, 16%);
+      --radius: 0.75rem;
+    }
+
+    ::selection { background: hsl(45 96% 49% / 0.3); color: var(--fg); }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .text-primary { color: var(--primary); }
+    .text-muted { color: var(--muted); }
+    .font-heading { font-family: 'Montserrat', sans-serif; }
+    .font-mono { font-family: monospace; }
+
+    /* Scroll progress */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--primary); z-index: 60;
+      width: 0%; transition: width 0.15s;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: background 0.3s, border-color 0.3s;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: hsl(225 14% 2% / 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom-color: var(--border);
+    }
+    .nav-inner {
+      max-width: 80rem; margin: 0 auto; padding: 0 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 4rem;
+    }
+    .nav-logo { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.125rem; color: var(--primary); }
+    .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+    .nav-links a {
+      padding: 0.5rem 0.75rem; font-size: 0.875rem; font-weight: 500;
+      border-radius: 0.375rem; transition: color 0.2s; color: var(--muted);
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+    .nav-cta {
+      display: inline-flex; padding: 0.5rem 1rem;
+      background: var(--primary); color: var(--primary-fg);
+      font-family: 'Montserrat', sans-serif; font-weight: 600;
+      font-size: 0.875rem; border-radius: 0.375rem;
+      transition: opacity 0.2s; border: none; cursor: pointer;
+    }
+    .nav-cta:hover { opacity: 0.9; }
+    .mobile-toggle {
+      display: none; background: none; border: none; color: var(--fg);
+      cursor: pointer; font-size: 1.5rem;
+    }
+    .mobile-menu {
+      display: none; background: hsl(225 14% 2% / 0.95);
+      backdrop-filter: blur(16px); border-bottom: 1px solid var(--border);
+      padding: 0 1rem 1rem;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu a {
+      display: block; padding: 0.5rem 0; font-size: 0.875rem;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--primary); }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta-desktop { display: none !important; }
+      .mobile-toggle { display: block; }
+    }
+
+    /* Section padding */
+    .section-padding { padding: 5rem 1rem; }
+    @media (min-width: 768px) { .section-padding { padding: 8rem 2rem; } }
+
+    /* Field lines bg */
+    .field-lines {
+      background-image:
+        linear-gradient(90deg, hsl(45 96% 49% / 0.03) 1px, transparent 1px),
+        linear-gradient(hsl(45 96% 49% / 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Glow */
+    .glow-yellow { box-shadow: 0 0 40px hsl(45 96% 49% / 0.15), 0 0 80px hsl(45 96% 49% / 0.05); }
+    .glow-yellow-sm { box-shadow: 0 0 20px hsl(45 96% 49% / 0.1); }
+
+    /* Scroll reveal animation */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+    .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+    .reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* ============== HERO ============== */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.2;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, hsl(225 14% 2% / 0.6), hsl(225 14% 2% / 0.8), var(--bg));
+    }
+    .hero-content {
+      position: relative; z-index: 10; max-width: 56rem;
+      margin: 0 auto; padding: 0 1rem; text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.375rem 1rem; border-radius: 9999px;
+      border: 1px solid hsl(45 96% 49% / 0.3);
+      background: hsl(45 96% 49% / 0.05);
+      color: var(--primary); font-size: 0.875rem; font-weight: 500;
+      margin-bottom: 2rem;
+    }
+    .hero-title {
+      font-size: clamp(2.25rem, 5vw, 4.5rem);
+      font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted); max-width: 42rem; margin: 0 auto 1rem;
+    }
+    .hero-micro {
+      font-size: 0.875rem; color: hsl(217 10% 64% / 0.6);
+      margin-bottom: 2.5rem; display: flex; align-items: center;
+      justify-content: center; gap: 0.5rem;
+    }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    .btn-primary {
+      padding: 0.875rem 2rem; background: var(--primary); color: var(--primary-fg);
+      font-family: 'Montserrat', sans-serif; font-weight: 600;
+      border-radius: var(--radius); border: none; cursor: pointer;
+      transition: opacity 0.2s, box-shadow 0.3s; font-size: 1rem;
+    }
+    .btn-primary:hover { opacity: 0.9; box-shadow: 0 0 40px hsl(45 96% 49% / 0.15); }
+    .btn-outline {
+      padding: 0.875rem 2rem; background: transparent;
+      border: 1px solid var(--border); color: var(--fg);
+      font-family: 'Montserrat', sans-serif; font-weight: 600;
+      border-radius: var(--radius); cursor: pointer;
+      transition: border-color 0.2s, color 0.2s; font-size: 1rem;
+    }
+    .btn-outline:hover { border-color: hsl(45 96% 49% / 0.5); color: var(--primary); }
+    .hero-floating {
+      position: absolute; font-family: monospace; font-size: 0.875rem;
+      color: hsl(45 96% 49% / 0.2); animation: float 6s ease-in-out infinite;
+    }
+    .hero-floating.f2 { animation: float2 5s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    @keyframes float2 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+    .scroll-indicator {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: hsl(217 10% 64% / 0.4); animation: bounce 2s infinite;
+    }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+    /* ============== ABOUT ============== */
+    .about-grid { display: grid; gap: 3rem; }
+    @media (min-width: 768px) { .about-grid { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; line-height: 1.7; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .about-tag {
+      padding: 0.375rem 0.75rem; font-size: 0.75rem; font-weight: 500;
+      border-radius: 9999px; background: var(--secondary);
+      color: var(--fg); border: 1px solid var(--border);
+    }
+    .timeline-item { display: flex; gap: 1rem; }
+    .timeline-line { display: flex; flex-direction: column; align-items: center; }
+    .timeline-dot {
+      width: 2.5rem; height: 2.5rem; border-radius: 50%;
+      background: hsl(45 96% 49% / 0.1); border: 1px solid hsl(45 96% 49% / 0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--primary); flex-shrink: 0; font-size: 1rem;
+    }
+    .timeline-connector { width: 1px; height: 4rem; background: var(--border); }
+    .timeline-content { padding-top: 0.5rem; padding-bottom: 2rem; }
+    .timeline-content h3 { font-weight: 600; font-size: 1rem; }
+    .timeline-content p { font-size: 0.875rem; color: var(--muted); }
+
+    /* ============== SKILLS ============== */
+    .skills-grid { display: grid; gap: 1.25rem; }
+    .skill-row { }
+    .skill-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+    .skill-name { font-family: 'Montserrat', sans-serif; font-weight: 500; transition: color 0.2s; }
+    .skill-row:hover .skill-name { color: var(--primary); }
+    .skill-pct { font-size: 0.875rem; color: var(--muted); }
+    .skill-bar { height: 0.5rem; background: var(--secondary); border-radius: 9999px; overflow: hidden; }
+    .skill-fill {
+      height: 100%; border-radius: 9999px;
+      width: 0%; transition: width 0.8s ease-out;
+    }
+    .fill-primary { background: var(--primary); }
+    .fill-accent { background: var(--accent); }
+    .fill-primary70 { background: hsl(45 96% 49% / 0.7); }
+    .fill-accent70 { background: hsl(199 89% 60% / 0.7); }
+
+    /* ============== SERVICES ============== */
+    .services-grid { display: grid; gap: 1.5rem; }
+    @media (min-width: 768px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+    .service-card {
+      padding: 1.5rem 2rem; border-radius: var(--radius);
+      background: var(--card); border: 1px solid var(--border);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .service-card:hover { border-color: hsl(45 96% 49% / 0.3); box-shadow: 0 0 20px hsl(45 96% 49% / 0.1); }
+    .service-icon {
+      width: 3rem; height: 3rem; border-radius: 0.5rem;
+      background: hsl(45 96% 49% / 0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--primary); margin-bottom: 1.25rem;
+      transition: background 0.2s;
+    }
+    .service-card:hover .service-icon { background: hsl(45 96% 49% / 0.2); }
+    .service-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .service-card p { color: var(--muted); line-height: 1.6; margin-bottom: 1.25rem; font-size: 0.95rem; }
+    .service-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.875rem; color: var(--primary); font-weight: 500;
+      transition: gap 0.2s;
+    }
+    .service-link:hover { gap: 0.75rem; }
+
+    /* ============== PROJECTS ============== */
+    .projects-grid { display: grid; gap: 1.5rem; }
+    @media (min-width: 768px) { .projects-grid { grid-template-columns: 1fr 1fr; } }
+    .project-card {
+      padding: 1.5rem; border-radius: var(--radius);
+      background: var(--card); border: 1px solid var(--border);
+      cursor: pointer; transition: border-color 0.3s;
+    }
+    .project-card:hover { border-color: hsl(45 96% 49% / 0.3); }
+    .project-bar {
+      height: 4px; width: 3rem; border-radius: 9999px;
+      background: var(--primary); margin-bottom: 1.25rem;
+      transition: width 0.3s;
+    }
+    .project-card:hover .project-bar { width: 5rem; }
+    .project-header { display: flex; justify-content: space-between; margin-bottom: 0.75rem; }
+    .project-type { font-size: 0.75rem; font-family: monospace; color: var(--primary); }
+    .project-card h3 { font-size: 1.25rem; font-weight: 600; margin-top: 0.25rem; }
+    .project-card > p { color: var(--muted); font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem; }
+    .project-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .project-tool {
+      padding: 0.25rem 0.5rem; font-size: 0.75rem;
+      border-radius: 0.25rem; background: var(--secondary); color: var(--muted);
+    }
+
+    /* Project modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 50;
+      align-items: center; justify-content: center;
+      background: hsl(225 14% 2% / 0.8); backdrop-filter: blur(8px);
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-content {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 1rem; padding: 1.5rem 2rem; max-width: 32rem;
+      width: 100%; animation: scaleIn 0.2s ease-out;
+    }
+    @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+    .modal-close {
+      background: none; border: none; color: var(--muted);
+      cursor: pointer; font-size: 1.25rem; transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--fg); }
+    .modal-content p { color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    .modal-tools { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .modal-tool {
+      padding: 0.25rem 0.75rem; font-size: 0.75rem; border-radius: 9999px;
+      background: hsl(45 96% 49% / 0.1); color: var(--primary);
+      border: 1px solid hsl(45 96% 49% / 0.2);
+    }
+
+    /* ============== PROCESS ============== */
+    .process-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    @media (min-width: 768px) { .process-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+    @media (min-width: 1024px) { .process-grid { grid-template-columns: repeat(6, 1fr); } }
+    .process-step { text-align: center; }
+    .process-icon {
+      position: relative; width: 4rem; height: 4rem; border-radius: 1rem;
+      background: var(--secondary); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem; color: var(--muted);
+      transition: border-color 0.3s, background 0.3s, color 0.3s;
+      font-size: 1.25rem;
+    }
+    .process-step:hover .process-icon {
+      border-color: hsl(45 96% 49% / 0.5);
+      background: hsl(45 96% 49% / 0.1);
+      color: var(--primary);
+    }
+    .process-num {
+      position: absolute; top: -0.5rem; right: -0.5rem;
+      width: 1.5rem; height: 1.5rem; border-radius: 50%;
+      background: var(--primary); color: var(--primary-fg);
+      font-size: 0.75rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .process-step h3 { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.25rem; }
+    .process-step p { font-size: 0.75rem; color: var(--muted); }
+
+    /* ============== CONTACT ============== */
+    #contato { position: relative; }
+    .contact-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, var(--bg), hsl(220 13% 6% / 0.5), var(--card));
+    }
+    .contact-grid { display: grid; gap: 2rem; }
+    @media (min-width: 768px) { .contact-grid { grid-template-columns: 3fr 2fr; } }
+    .form-group { display: grid; gap: 1rem; }
+    @media (min-width: 640px) { .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; } }
+    input, select, textarea {
+      width: 100%; padding: 0.75rem 1rem; border-radius: 0.5rem;
+      background: var(--secondary); border: 1px solid var(--border);
+      color: var(--fg); font-size: 0.875rem; font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color 0.2s;
+    }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+    input:focus, select:focus, textarea:focus { border-color: hsl(45 96% 49% / 0.5); }
+    textarea { resize: none; }
+    select { appearance: none; cursor: pointer; }
+    option { background: var(--secondary); color: var(--fg); }
+
+    .social-link {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem; border-radius: var(--radius);
+      background: var(--card); border: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    .social-link:hover { border-color: hsl(45 96% 49% / 0.3); }
+    .social-icon {
+      width: 2.5rem; height: 2.5rem; border-radius: 0.5rem;
+      background: hsl(45 96% 49% / 0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--primary); transition: background 0.2s;
+    }
+    .social-link:hover .social-icon { background: hsl(45 96% 49% / 0.2); }
+    .social-info span { font-size: 0.875rem; font-family: 'Montserrat', sans-serif; font-weight: 600; }
+    .social-info p { font-size: 0.75rem; color: var(--muted); margin-top: 0.125rem; }
+
+    /* ============== FOOTER ============== */
+    footer {
+      border-top: 1px solid var(--border); padding: 2rem 1rem; text-align: center;
+      font-size: 0.875rem; color: var(--muted);
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 100;
+      padding: 1rem 1.5rem; border-radius: var(--radius);
+      font-size: 0.875rem; font-weight: 500;
+      animation: slideUp 0.3s ease-out;
+      transition: opacity 0.3s;
+    }
+    .toast.success { background: hsl(142 71% 45%); color: #fff; }
+    .toast.error { background: hsl(0 84% 60%); color: #fff; }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* Max widths */
+    .max-w-6xl { max-width: 72rem; margin: 0 auto; }
+    .max-w-4xl { max-width: 56rem; margin: 0 auto; }
+    .max-w-lg { max-width: 32rem; }
+    .max-w-2xl { max-width: 42rem; }
+
+    /* SVG icons inline */
+    .icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div id="scroll-progress"></div>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">&lt;Emerson /&gt;</a>
+    <div class="nav-links">
+      <a href="#hero" data-section="hero">Início</a>
+      <a href="#sobre" data-section="sobre">Sobre</a>
+      <a href="#skills" data-section="skills">Skills</a>
+      <a href="#servicos" data-section="servicos">Serviços</a>
+      <a href="#projetos" data-section="projetos">Projetos</a>
+      <a href="#processo" data-section="processo">Processo</a>
+      <a href="#contato" data-section="contato">Contato</a>
+    </div>
+    <a href="#contato" class="nav-cta nav-cta-desktop">Fale comigo</a>
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#hero" onclick="closeMobile()">Início</a>
+    <a href="#sobre" onclick="closeMobile()">Sobre</a>
+    <a href="#skills" onclick="closeMobile()">Skills</a>
+    <a href="#servicos" onclick="closeMobile()">Serviços</a>
+    <a href="#projetos" onclick="closeMobile()">Projetos</a>
+    <a href="#processo" onclick="closeMobile()">Processo</a>
+    <a href="#contato" onclick="closeMobile()">Contato</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <img src="assets/hero-bg.jpg" alt="" class="hero-bg-img" />
+  <div class="hero-overlay"></div>
+  <div class="hero-floating" style="top:25%; left:10%;">{ noCode: true }</div>
+  <div class="hero-floating f2" style="bottom:33%; right:10%;">&lt;Plugin /&gt;</div>
+  <div class="hero-content">
+    <div class="hero-badge reveal">⚡ Especialista em Bubble &amp; No-code</div>
+    <h1 class="hero-title reveal" style="transition-delay: 0.1s;">
+      🤯 Seus <span class="text-primary">Problemas,</span> nossas Soluções! 🤩.
+    </h1>
+    <p class="hero-sub reveal" style="transition-delay: 0.2s;">
+      Eu sou o Emerson, dev no-code/low-code, especialista em Bubble e criação de plugins. Ajudo empreendedores e empresas a tirarem ideias do papel com velocidade e qualidade.
+    </p>
+    <p class="hero-micro reveal" style="transition-delay: 0.3s;">
+      &lt;/&gt; Dev, nômade digital, marvete raiz e jogador de baba nas horas vagas.
+    </p>
+    <div class="hero-buttons reveal" style="transition-delay: 0.4s;">
+      <a href="#contato" class="btn-primary">Quero desenvolver um projeto</a>
+      <a href="#projetos" class="btn-outline">Ver portfólio</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">▼</div>
+</section>
+
+<!-- ABOUT -->
+<section id="sobre" class="section-padding">
+  <div class="max-w-6xl">
+    <span class="text-primary font-mono reveal" style="font-size:0.875rem;">// sobre mim</span>
+    <div class="about-grid" style="margin-top:1rem;">
+      <div>
+        <h2 class="reveal" style="font-size:clamp(1.875rem,3vw,2.25rem); font-weight:700; margin-bottom:1.5rem; transition-delay:0.1s;">
+          O cara por trás do <span class="text-primary">&lt;código /&gt;</span>
+        </h2>
+        <div class="about-text reveal" style="transition-delay:0.2s;">
+          <p>Baiano, freelancer, pai e nômade digital. Comecei na programação tradicional com JavaScript e HTML, mas encontrei meu caminho no universo no-code quando percebi que o que importa de verdade é resolver o problema do cliente com agilidade.</p>
+          <p>Hoje sou especialista em Bubble.io, onde crio desde aplicações web complexas até plugins customizados. Minha missão é ajudar empreendedores a tirarem ideias do papel sem precisar de um time gigante de desenvolvimento.</p>
+          <p>Quando não estou codando, provavelmente estou assistindo Marvel, jogando um baba ou tentando sobreviver sem academia. 🏃‍♂️⚽</p>
+        </div>
+        <div class="about-tags reveal" style="transition-delay:0.4s;">
+          <span class="about-tag">Dev no-code/low-code</span>
+          <span class="about-tag">Freelancer</span>
+          <span class="about-tag">Criador de conteúdo</span>
+          <span class="about-tag">Nômade digital</span>
+        </div>
+      </div>
+      <div class="reveal-right" style="transition-delay:0.3s;">
+        <div class="timeline-item">
+          <div class="timeline-line">
+            <div class="timeline-dot">💻</div>
+            <div class="timeline-connector"></div>
+          </div>
+          <div class="timeline-content"><h3>Primeiros códigos</h3><p>JS, HTML, CSS</p></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-line">
+            <div class="timeline-dot">🌐</div>
+            <div class="timeline-connector"></div>
+          </div>
+          <div class="timeline-content"><h3>Descoberta do no-code</h3><p>Bubble.io</p></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-line">
+            <div class="timeline-dot">🚀</div>
+            <div class="timeline-connector"></div>
+          </div>
+          <div class="timeline-content"><h3>Criação de plugins</h3><p>Bubble plugins</p></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-line">
+            <div class="timeline-dot">👶</div>
+          </div>
+          <div class="timeline-content"><h3>Dev no Baba</h3><p>Conteúdo digital</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section-padding field-lines">
+  <div class="max-w-4xl">
+    <div class="reveal">
+      <span class="text-primary font-mono" style="font-size:0.875rem;">// skills &amp; stack</span>
+      <h2 style="font-size:clamp(1.875rem,3vw,2.25rem); font-weight:700; margin-top:0.5rem; margin-bottom:3rem;">
+        O que eu domino na <span class="text-primary">prática</span>
+      </h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-row reveal" data-level="95" style="transition-delay:0s;"><div class="skill-header"><span class="skill-name font-heading">Bubble.io</span><span class="skill-pct">95%</span></div><div class="skill-bar"><div class="skill-fill fill-primary"></div></div></div>
+      <div class="skill-row reveal" data-level="90" style="transition-delay:0.07s;"><div class="skill-header"><span class="skill-name font-heading">Criação de Plugins</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill fill-primary"></div></div></div>
+      <div class="skill-row reveal" data-level="75" style="transition-delay:0.14s;"><div class="skill-header"><span class="skill-name font-heading">JavaScript</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill fill-accent"></div></div></div>
+      <div class="skill-row reveal" data-level="80" style="transition-delay:0.21s;"><div class="skill-header"><span class="skill-name font-heading">HTML / CSS</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill fill-accent"></div></div></div>
+      <div class="skill-row reveal" data-level="85" style="transition-delay:0.28s;"><div class="skill-header"><span class="skill-name font-heading">Integração de APIs</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill fill-primary70"></div></div></div>
+      <div class="skill-row reveal" data-level="80" style="transition-delay:0.35s;"><div class="skill-header"><span class="skill-name font-heading">Automação de Fluxos</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill fill-primary70"></div></div></div>
+      <div class="skill-row reveal" data-level="70" style="transition-delay:0.42s;"><div class="skill-header"><span class="skill-name font-heading">UX / Prototipação</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill fill-primary70"></div></div></div>
+      <div class="skill-row reveal" data-level="100" style="transition-delay:0.49s;"><div class="skill-header"><span class="skill-name font-heading">Trabalho Remoto</span><span class="skill-pct">100%</span></div><div class="skill-bar"><div class="skill-fill fill-accent70"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="servicos" class="section-padding">
+  <div class="max-w-6xl">
+    <div class="reveal">
+      <span class="text-primary font-mono" style="font-size:0.875rem;">// serviços</span>
+      <h2 style="font-size:clamp(1.875rem,3vw,2.25rem); font-weight:700; margin-top:0.5rem; margin-bottom:3rem;">
+        Como posso te <span class="text-primary">ajudar</span>
+      </h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal-left" style="transition-delay:0s;">
+        <div class="service-icon">🧱</div>
+        <h3 class="font-heading">Desenvolvimento No-code</h3>
+        <p>Landing pages, plataformas web, dashboards e sistemas internos completos usando Bubble.io.</p>
+        <a href="#contato" class="service-link">Falar sobre esse serviço →</a>
+      </div>
+      <div class="service-card reveal-right" style="transition-delay:0.1s;">
+        <div class="service-icon">🧩</div>
+        <h3 class="font-heading">Criação de Plugins Bubble</h3>
+        <p>Funcionalidades customizadas sob demanda para expandir o que Bubble pode fazer nativamente.</p>
+        <a href="#contato" class="service-link">Falar sobre esse serviço →</a>
+      </div>
+      <div class="service-card reveal-left" style="transition-delay:0.2s;">
+        <div class="service-icon">👥</div>
+        <h3 class="font-heading">Consultoria &amp; Mentoria</h3>
+        <p>Ajudo equipes e empreendedores a estruturar soluções no-code com a estratégia certa.</p>
+        <a href="#contato" class="service-link">Falar sobre esse serviço →</a>
+      </div>
+      <div class="service-card reveal-right" style="transition-delay:0.3s;">
+        <div class="service-icon">🔧</div>
+        <h3 class="font-heading">Manutenção &amp; Evolução</h3>
+        <p>Manutenção, melhorias e evolução de projetos Bubble já existentes.</p>
+        <a href="#contato" class="service-link">Falar sobre esse serviço →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projetos" class="section-padding">
+  <div class="max-w-6xl">
+    <div class="reveal">
+      <span class="text-primary font-mono" style="font-size:0.875rem;">// portfólio</span>
+      <h2 style="font-size:clamp(1.875rem,3vw,2.25rem); font-weight:700; margin-top:0.5rem; margin-bottom:3rem;">
+        Projetos em que coloquei o <span class="text-primary">código pra rodar</span>
+      </h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card reveal" style="transition-delay:0s;" onclick="openModal(0)">
+        <div class="project-bar"></div>
+        <div class="project-header"><div><span class="project-type">Plataforma Web</span><h3 class="font-heading">Lojix</h3></div></div>
+        <p>Todos mudaram e sua vitrine também, agora ela virtual. Feito durante aprendizado do curso CSC</p>
+        <div class="project-tools"><span class="project-tool">Bubble</span><span class="project-tool">APIs</span></div>
+      </div>
+      <div class="project-card reveal" style="transition-delay:0.1s;" onclick="openModal(1)">
+        <div class="project-bar"></div>
+        <div class="project-header"><div><span class="project-type">Sistema Interno</span><h3 class="font-heading">App meu trampo</h3></div></div>
+        <p>Feito durante o aprendizado no curso CSC.</p>
+        <div class="project-tools"><span class="project-tool">Bubble</span><span class="project-tool">Charts</span></div>
+      </div>
+      <div class="project-card reveal" style="transition-delay:0.2s;" onclick="openModal(2)">
+        <div class="project-bar"></div>
+        <div class="project-header"><div><span class="project-type">Plugin Bubble</span><h3 class="font-heading">@mentions</h3></div></div>
+        <p>Extraia e-mails, #tags, @menções, URLs de qualquer fonte de texto. Também obtenha um texto formatado com tags HTML para uso direto..</p>
+        <div class="project-tools"><span class="project-tool">JavaScript</span><span class="project-tool">Bubble Plugin API</span></div>
+      </div>
+      <div class="project-card reveal" style="transition-delay:0.3s;" onclick="openModal(3)">
+        <div class="project-bar"></div>
+        <div class="project-header"><div><span class="project-type">Web App</span><h3 class="font-heading">Orçamento Simples</h3></div></div>
+        <p>Nunca foi tão simples conversar com seu cliente e ao mesmo tempo poder realizar o orçamento do veículo desejado pelo cliente e já poder enviar em PDF, para o WhatsApp e para o Email do cliente.</p>
+        <div class="project-tools"><span class="project-tool">Bubble</span><span class="project-tool">APIs</span><span class="project-tool">Automação</span></div>
+      </div>
+      <div class="project-card reveal" style="transition-delay:0.3s;" onclick="openModal(4)">
+        <div class="project-bar"></div>
+        <div class="project-header"><div><span class="project-type">Web App</span><h3 class="font-heading">App Vote agora</h3></div></div>
+        <p>App para você votar em qualquer lugar e em qualquer momento, com uma interface simples e intuitiva.</p>
+        <div class="project-tools"><span class="project-tool">Bubble</span><span class="project-tool">APIs</span><span class="project-tool">Automação</span></div>
+      </div>
+      <div class="project-card reveal" style="transition-delay:0.3s;" onclick="openModal(5)">
+        <div class="project-bar"></div>
+        <div class="project-header"><div><span class="project-type">Web App</span><h3 class="font-heading">Upção EAD</h3></div></div>
+        <p>Upção EAD é uma plataforma de estudos na modalidade EAD. Seja bem vindo!</p>
+        <div class="project-tools"><span class="project-tool">Bubble</span><span class="project-tool">APIs</span><span class="project-tool">Automação</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Project Modal -->
+<div class="modal-overlay" id="project-modal">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <span class="project-type" id="modal-type"></span>
+        <h3 class="font-heading" id="modal-title" style="font-size:1.5rem; font-weight:700; margin-top:0.25rem;"></h3>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <p id="modal-details"></p>
+    <div class="modal-tools" id="modal-tools"></div>
+    <a href="#contato" class="btn-primary" onclick="closeModal()" style="font-size:0.875rem; padding:0.625rem 1.5rem;">Quero algo parecido</a>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section id="processo" class="section-padding field-lines">
+  <div class="max-w-6xl">
+    <div class="reveal">
+      <span class="text-primary font-mono" style="font-size:0.875rem;">// processo</span>
+      <h2 style="font-size:clamp(1.875rem,3vw,2.25rem); font-weight:700; margin-top:0.5rem; margin-bottom:3rem;">
+        Como eu <span class="text-primary">trabalho</span>
+      </h2>
+    </div>
+    <div class="process-grid">
+      <div class="process-step reveal" style="transition-delay:0s;">
+        <div class="process-icon">💬<span class="process-num">1</span></div>
+        <h3 class="font-heading">Briefing</h3><p>Entendo seu problema e objetivo</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.1s;">
+        <div class="process-icon">📄<span class="process-num">2</span></div>
+        <h3 class="font-heading">Proposta</h3><p>Escopo e prazo definidos</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.15s;">
+        <div class="process-icon">📐<span class="process-num">3</span></div>
+        <h3 class="font-heading">Arquitetura</h3><p>Protótipo e estrutura</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.2s;">
+        <div class="process-icon">&lt;/&gt;<span class="process-num">4</span></div>
+        <h3 class="font-heading">Desenvolvimento</h3><p>Construção no-code</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.25s;">
+        <div class="process-icon">🧪<span class="process-num">5</span></div>
+        <h3 class="font-heading">Testes</h3><p>Ajustes e validação</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.3s;">
+        <div class="process-icon">🚀<span class="process-num">6</span></div>
+        <h3 class="font-heading">Entrega</h3><p>Deploy e acompanhamento</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contato" class="section-padding" style="position:relative;">
+  <div class="contact-bg"></div>
+  <div class="max-w-4xl" style="position:relative;">
+    <div class="reveal" style="text-align:center; margin-bottom:3rem;">
+      <span class="text-primary font-mono" style="font-size:0.875rem;">// contato</span>
+      <h2 style="font-size:clamp(1.875rem,3vw,2.25rem); font-weight:700; margin-top:0.5rem; margin-bottom:1rem;">
+        Bora tirar seu projeto do papel com <span class="text-primary">no-code</span>?
+      </h2>
+      <p class="text-muted" style="max-width:32rem; margin:0 auto;">Me conta o que você precisa e eu te ajudo a encontrar a melhor solução.</p>
+    </div>
+
+    <div class="contact-grid">
+      <form class="form-group reveal" style="transition-delay:0.1s;" id="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <input type="text" placeholder="Seu nome *" id="f-name" maxlength="100" />
+          <input type="email" placeholder="Seu e-mail *" id="f-email" maxlength="255" />
+        </div>
+        <select id="f-type">
+          <option value="">Tipo de projeto</option>
+          <option>Web App / Plataforma</option>
+          <option>Landing Page</option>
+          <option>Plugin Bubble</option>
+          <option>Consultoria / Mentoria</option>
+          <option>Manutenção de projeto</option>
+          <option>Outro</option>
+        </select>
+        <textarea placeholder="Descreva o que você precisa *" rows="4" id="f-message" maxlength="1000"></textarea>
+        <button type="submit" class="btn-primary" style="display:inline-flex; align-items:center; gap:0.5rem;">
+          ✉ Enviar mensagem
+        </button>
+      </form>
+
+      <div class="form-group reveal" style="transition-delay:0.2s;">
+        <a href="https://wa.me/5571996755745" target="_blank" rel="noopener noreferrer" class="social-link">
+          <div class="social-icon">💬</div>
+          <div class="social-info"><span>WhatsApp</span><p>Resposta rápida</p></div>
+        </a>
+        <a href="https://instagram.com/diario_dobanana" target="_blank" rel="noopener noreferrer" class="social-link">
+          <div class="social-icon">📸</div>
+          <div class="social-info"><span>Instagram</span><p>@diario_dobanana</p></div>
+        </a>
+        <a href="mailto:suporteupcao@gmail.com" class="social-link">
+          <div class="social-icon">✉</div>
+          <div class="social-info"><span>E-mail</span><p>suporteupcao@gmail.com</p></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© <script>document.write(new Date().getFullYear())</script> Emerson Silva. Feito com <span class="text-primary">♥</span> e no-code.</p>
+</footer>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<script>
+// ========== Projects data ==========
+const projects = [
+  { title:"Lojix", type:"Plataforma Web", tools:["Bubble","APIs"], details:"Sistema completo para sua vitrine, agora ela é virtual. Desenvolvido 100% em Bubble com integrações de API externas." },
+  { title:"App meu trampo", type:"Sistema Interno", tools:["Bubble","Charts"], details:"Em busca de vagas de emprego? Aqui você pode encontrar e publicar vagas, de forma tranquilo e simples." },
+  { title:"@mentions", type:"Plugin Bubble", tools:["JavaScript","Bubble Plugin API"], details:"Extraia e-mails, #tags, @menções, URLs de qualquer fonte de texto. Também obtenha um texto formatado com tags HTML para uso direto." },
+  { title:"Orçamento Simples", type:"Web App", tools:["Bubble","APIs","Automação"], details:"Nunca foi tão simples conversar com seu cliente e ao mesmo tempo poder realizar o orçamento do veículo desejado pelo cliente e já poder enviar em PDF, para o WhatsApp e para o Email do cliente." },
+  { title:"App Vote agora", type:"Web App", tools:["Bubble","APIs","Automação"], details:"Sua empresa deseja fazer uma eleição? Este modelo irá te ajudar com todas funcionalidades. Landpage (visão do usuário), Dashboarb (para o adm do sistema, cadastrar, alterar e deletar candidatos, eleitores e eleições, além de poder imprimir em PDF os resultados das eleições e de eleitores." },
+  { title:"Upção EAD", type:"Web App", tools:["Bubble","APIs","Automação","Charts"], details:"Upção EAD é uma plataforma de estudos na modalidade EAD. Seja bem vindo!" }
+];
+
+// ========== Modal ==========
+function openModal(i) {
+  const p = projects[i];
+  document.getElementById('modal-type').textContent = p.type;
+  document.getElementById('modal-title').textContent = p.title;
+  document.getElementById('modal-details').textContent = p.details;
+  const toolsEl = document.getElementById('modal-tools');
+  toolsEl.innerHTML = p.tools.map(t => '<span class="modal-tool">'+t+'</span>').join('');
+  document.getElementById('project-modal').classList.add('open');
+}
+function closeModal() { document.getElementById('project-modal').classList.remove('open'); }
+document.getElementById('project-modal').addEventListener('click', closeModal);
+
+// ========== Mobile menu ==========
+document.getElementById('mobile-toggle').addEventListener('click', function() {
+  const menu = document.getElementById('mobile-menu');
+  const isOpen = menu.classList.toggle('open');
+  this.textContent = isOpen ? '✕' : '☰';
+});
+function closeMobile() {
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('mobile-toggle').textContent = '☰';
+}
+
+// ========== Scroll: progress + navbar + active section ==========
+const sections = ['hero','sobre','skills','servicos','projetos','processo','contato'];
+window.addEventListener('scroll', function() {
+  const scrollY = window.scrollY;
+  // Progress bar
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('scroll-progress').style.width = (total > 0 ? (scrollY/total)*100 : 0) + '%';
+  // Navbar bg
+  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 50);
+  // Active section
+  const links = document.querySelectorAll('.nav-links a');
+  for (let i = sections.length - 1; i >= 0; i--) {
+    const el = document.getElementById(sections[i]);
+    if (el && el.getBoundingClientRect().top <= 120) {
+      links.forEach(l => l.classList.remove('active'));
+      const activeLink = document.querySelector('.nav-links a[data-section="'+sections[i]+'"]');
+      if (activeLink) activeLink.classList.add('active');
+      break;
+    }
+  }
+});
+
+// ========== Scroll reveal (IntersectionObserver) ==========
+const observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Animate skill bars
+      if (entry.target.classList.contains('skill-row')) {
+        const level = entry.target.getAttribute('data-level');
+        const fill = entry.target.querySelector('.skill-fill');
+        if (fill) setTimeout(function(){ fill.style.width = level + '%'; }, 100);
+      }
+    }
+  });
+}, { threshold: 0.1, rootMargin: '-50px' });
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
+  observer.observe(el);
+});
+
+// ========== Toast ==========
+function showToast(msg, type) {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(function() { t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 300); }, 3000);
+}
+
+// ========== Contact form ==========
+// Inicializar EmailJS (substitua 'YOUR_PUBLIC_KEY' pela sua chave pública do EmailJS)
+(function() {
+  emailjs.init("0z2AZbb77vvASX_tO"); // Substitua pela sua chave pública
+})();
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const projectType = document.getElementById('f-type').value;
+  const message = document.getElementById('f-message').value.trim();
+  
+  // Validação
+  if (!name || !email || !message) {
+    showToast('Preencha todos os campos obrigatórios.', 'error');
+    return;
+  }
+  
+  // Validação de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showToast('Por favor, insira um e-mail válido.', 'error');
+    return;
+  }
+  
+  // Desabilitar botão durante o envio
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Enviando...';
+  
+  try {
+    // Parâmetros do template do EmailJS
+    // Substitua 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID' pelos seus IDs do EmailJS
+    const now = new Date();
+    const timeStr = now.toLocaleString('pt-BR', { 
+      day: '2-digit', 
+      month: '2-digit', 
+      year: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+    
+    const templateParams = {
+      from_name: name,
+      from_email: email,
+      project_type: projectType || 'Não especificado',
+      message: message,
+      time: timeStr,
+      to_email: 'suporteupcao@gmail.com' // Seu email de destino
+    };
+    
+    // Enviar email usando EmailJS
+    await emailjs.send(
+      'service_cdl8wra',    // Substitua pelo seu Service ID
+      'template_dpthiii',   // Substitua pelo seu Template ID
+      templateParams
+    );
+    
+    showToast('Mensagem enviada! Vou te responder em breve. 🚀', 'success');
+    document.getElementById('contact-form').reset();
+    
+  } catch (error) {
+    console.error('Erro ao enviar email:', error);
+    showToast('Erro ao enviar mensagem. Tente novamente ou entre em contato pelo WhatsApp.', 'error');
+  } finally {
+    // Reabilitar botão
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
+  }
+}
+</script>
+</body>
+</html>
